@@ -1,83 +1,132 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harsha Traders - Login</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+const loginForm = document.getElementById("loginForm");
+const username = document.getElementById("username");
+const password = document.getElementById("password");
 
-<body>
+const usernameError = document.getElementById("usernameError");
+const passwordError = document.getElementById("passwordError");
 
-    <div class="login-container">
+const loginButton = document.getElementById("loginButton");
+const loginMessage = document.getElementById("loginMessage");
 
-        <div class="login-card">
+const togglePassword = document.getElementById("togglePassword");
+const rememberMe = document.getElementById("rememberMe");
 
-            <div class="logo">
-                <div class="logo-icon">HT</div>
-                <h1>HARSHA TRADERS</h1>
-                <p>Business Management Portal</p>
-            </div>
 
-            <form id="loginForm">
+// Show / Hide Password
+togglePassword.addEventListener("click", function () {
 
-                <div class="input-group">
-                    <label for="username">Username / Email</label>
-                    <input
-                        type="text"
-                        id="username"
-                        placeholder="Enter username or email"
-                        autocomplete="username"
-                    >
-                    <small class="error" id="usernameError"></small>
-                </div>
+    if (password.type === "password") {
+        password.type = "text";
+        togglePassword.textContent = "Hide";
+    } else {
+        password.type = "password";
+        togglePassword.textContent = "Show";
+    }
 
-                <div class="input-group">
-                    <label for="password">Password</label>
+});
 
-                    <div class="password-box">
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Enter password"
-                            autocomplete="current-password"
-                        >
-                        <button type="button" id="togglePassword">
-                            Show
-                        </button>
-                    </div>
 
-                    <small class="error" id="passwordError"></small>
-                </div>
+// Load remembered username
+window.addEventListener("load", function () {
 
-                <div class="login-options">
-                    <label>
-                        <input type="checkbox" id="rememberMe">
-                        Remember Me
-                    </label>
+    const savedUsername = localStorage.getItem("harshaUsername");
 
-                    <a href="#" id="forgotPassword">
-                        Forgot Password?
-                    </a>
-                </div>
+    if (savedUsername) {
+        username.value = savedUsername;
+        rememberMe.checked = true;
+    }
 
-                <button type="submit" class="login-btn" id="loginButton">
-                    LOGIN
-                </button>
+});
 
-                <div class="login-message" id="loginMessage"></div>
 
-            </form>
+// Login
+loginForm.addEventListener("submit", function (event) {
 
-            <div class="footer">
-                © 2026 Harsha Traders. All Rights Reserved.
-            </div>
+    event.preventDefault();
 
-        </div>
+    usernameError.textContent = "";
+    passwordError.textContent = "";
+    loginMessage.textContent = "";
+    loginMessage.className = "login-message";
 
-    </div>
+    let valid = true;
 
-    <script src="script.js"></script>
+    if (username.value.trim() === "") {
+        usernameError.textContent = "Please enter username or email.";
+        valid = false;
+    }
 
-</body>
-</html>
+    if (password.value.trim() === "") {
+        passwordError.textContent = "Please enter password.";
+        valid = false;
+    }
+
+    if (!valid) {
+        return;
+    }
+
+    loginButton.disabled = true;
+    loginButton.textContent = "LOGGING IN...";
+
+    /*
+       DEMO LOGIN ONLY
+
+       Username: admin
+       Password: Harsha@123
+
+       IMPORTANT:
+       Do not use frontend-only passwords for a real website.
+       Connect this form to a secure backend/database.
+    */
+
+    setTimeout(function () {
+
+        const enteredUsername = username.value.trim();
+        const enteredPassword = password.value;
+
+        if (
+            enteredUsername === "admin" &&
+            enteredPassword === "Harsha@123"
+        ) {
+
+            if (rememberMe.checked) {
+                localStorage.setItem(
+                    "harshaUsername",
+                    enteredUsername
+                );
+            } else {
+                localStorage.removeItem("harshaUsername");
+            }
+
+            loginMessage.textContent = "Login successful. Redirecting...";
+            loginMessage.classList.add("success");
+
+            setTimeout(function () {
+                window.location.href = "dashboard.html";
+            }, 1000);
+
+        } else {
+
+            loginMessage.textContent =
+                "Invalid username or password.";
+
+            loginButton.disabled = false;
+            loginButton.textContent = "LOGIN";
+        }
+
+    }, 800);
+
+});
+
+
+// Forgot Password
+document.getElementById("forgotPassword")
+    .addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        alert(
+            "Please contact the Harsha Traders administrator to reset your password."
+        );
+
+    });
