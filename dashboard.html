@@ -1,1 +1,1007 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Harsha Traders | Dashboard</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f7fa;
+            color: #263746;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+
+            background: linear-gradient(
+                180deg,
+                #073b63,
+                #075b80
+            );
+
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .logo {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,.15);
+        }
+
+        .logo-icon {
+            width: 55px;
+            height: 55px;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,.15);
+
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo h2 {
+            margin-top: 12px;
+            font-size: 20px;
+        }
+
+        .logo p {
+            font-size: 11px;
+            opacity: .7;
+            margin-top: 4px;
+        }
+
+        .menu {
+            margin-top: 25px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            padding: 13px 15px;
+            margin-bottom: 6px;
+
+            border-radius: 8px;
+
+            color: rgba(255,255,255,.8);
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: .2s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: rgba(255,255,255,.14);
+            color: white;
+        }
+
+        .menu-icon {
+            width: 22px;
+            text-align: center;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            right: 15px;
+        }
+
+        .logout button {
+            width: 100%;
+            padding: 12px;
+
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 8px;
+
+            background: rgba(255,255,255,.08);
+            color: white;
+
+            cursor: pointer;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        /* TOP BAR */
+
+        .topbar {
+            height: 75px;
+
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            border-bottom: 1px solid #e5e9ed;
+        }
+
+        .topbar h1 {
+            font-size: 22px;
+            color: #123d5c;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: #0b638b;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .user-info span {
+            font-size: 11px;
+            color: #89949d;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 30px 35px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            font-size: 24px;
+            color: #123d5c;
+        }
+
+        .welcome p {
+            margin-top: 5px;
+            color: #7d8992;
+            font-size: 13px;
+        }
+
+        /* CARDS */
+
+        .cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            border: 1px solid #e6ebef;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,.04);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            color: #7c8891;
+            font-size: 12px;
+        }
+
+        .card-icon {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #edf6fa;
+
+            font-size: 18px;
+        }
+
+        .card h3 {
+            margin-top: 15px;
+
+            font-size: 25px;
+
+            color: #173e59;
+        }
+
+        .card small {
+            display: block;
+
+            margin-top: 6px;
+
+            color: #7c8891;
+
+            font-size: 11px;
+        }
+
+        /* QUICK ACTIONS */
+
+        .section-title {
+            font-size: 17px;
+            color: #183f5a;
+            margin-bottom: 15px;
+        }
+
+        .quick-actions {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 30px;
+        }
+
+        .action {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            border: 1px solid #e5eaee;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .action:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(0,0,0,.07);
+        }
+
+        .action-icon {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .action strong {
+            display: block;
+
+            color: #25475d;
+
+            font-size: 14px;
+        }
+
+        .action span {
+            font-size: 11px;
+            color: #89949d;
+        }
+
+        /* TABLE */
+
+        .table-box {
+            background: white;
+
+            border-radius: 12px;
+
+            border: 1px solid #e5eaee;
+
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px;
+
+            display: flex;
+            justify-content: space-between;
+
+            border-bottom: 1px solid #e8edf0;
+        }
+
+        .table-header h3 {
+            font-size: 16px;
+            color: #183f5a;
+        }
+
+        .view-all {
+            color: #0b6e96;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px 20px;
+
+            text-align: left;
+
+            border-bottom: 1px solid #edf0f2;
+
+            font-size: 12px;
+        }
+
+        th {
+            color: #7b8790;
+            font-weight: 600;
+            background: #fafbfc;
+        }
+
+        td {
+            color: #40515d;
+        }
+
+        .status {
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            background: #eaf7ef;
+
+            color: #20824a;
+
+            font-size: 10px;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 1100px) {
+
+            .cards {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .quick-actions {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 750px) {
+
+            .sidebar {
+                width: 70px;
+                padding: 15px 8px;
+            }
+
+            .logo h2,
+            .logo p,
+            .menu span,
+            .logout button {
+                display: none;
+            }
+
+            .logo {
+                border: none;
+            }
+
+            .menu a {
+                justify-content: center;
+                padding: 14px 5px;
+            }
+
+            .main {
+                margin-left: 70px;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .table-box {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 600px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            HT
+        </div>
+
+        <h2>Harsha Traders</h2>
+
+        <p>Business Management</p>
+
+    </div>
+
+
+    <nav class="menu">
+
+        <a href="#" class="active">
+            <div class="menu-icon">⌂</div>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="#">
+            <div class="menu-icon">🧾</div>
+            <span>Sales</span>
+        </a>
+
+        <a href="#">
+            <div class="menu-icon">🛒</div>
+            <span>Purchases</span>
+        </a>
+
+        <a href="#">
+            <div class="menu-icon">💰</div>
+            <span>Receipts</span>
+        </a>
+
+        <a href="#">
+            <div class="menu-icon">💳</div>
+            <span>Payments</span>
+        </a>
+
+        <a href="#">
+            <div class="menu-icon">👥</div>
+            <span>Customers</span>
+        </a>
+
+        <a href="#">
+            <div class="menu-icon">🏢</div>
+            <span>Suppliers</span>
+        </a>
+
+        <a href="#">
+            <div class="menu-icon">📊</div>
+            <span>Reports</span>
+        </a>
+
+        <a href="#">
+            <div class="menu-icon">⚙</div>
+            <span>Settings</span>
+        </a>
+
+    </nav>
+
+
+    <div class="logout">
+
+        <button onclick="logout()">
+            ⇥ &nbsp; Logout
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+        <h1>Dashboard</h1>
+
+        <div class="user">
+
+            <div class="user-avatar">
+                A
+            </div>
+
+            <div class="user-info">
+
+                <strong>Admin</strong>
+
+                <span>Administrator</span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <section class="content">
+
+
+        <div class="welcome">
+
+            <h2>Welcome back, Admin 👋</h2>
+
+            <p>
+                Here is your business overview for today.
+            </p>
+
+        </div>
+
+
+        <!-- SUMMARY CARDS -->
+
+        <div class="cards">
+
+
+            <div class="card">
+
+                <div class="card-top">
+
+                    <span class="card-title">
+                        TOTAL SALES
+                    </span>
+
+                    <div class="card-icon">
+                        🧾
+                    </div>
+
+                </div>
+
+                <h3>₹ 12,45,680</h3>
+
+                <small>
+                    This month
+                </small>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-top">
+
+                    <span class="card-title">
+                        TOTAL PURCHASE
+                    </span>
+
+                    <div class="card-icon">
+                        🛒
+                    </div>
+
+                </div>
+
+                <h3>₹ 8,72,450</h3>
+
+                <small>
+                    This month
+                </small>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-top">
+
+                    <span class="card-title">
+                        RECEIVABLES
+                    </span>
+
+                    <div class="card-icon">
+                        💰
+                    </div>
+
+                </div>
+
+                <h3>₹ 4,85,200</h3>
+
+                <small>
+                    Customer outstanding
+                </small>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-top">
+
+                    <span class="card-title">
+                        PAYABLES
+                    </span>
+
+                    <div class="card-icon">
+                        💳
+                    </div>
+
+                </div>
+
+                <h3>₹ 2,35,700</h3>
+
+                <small>
+                    Supplier outstanding
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <h3 class="section-title">
+            Quick Actions
+        </h3>
+
+
+        <div class="quick-actions">
+
+            <div class="action">
+
+                <div class="action-icon">
+                    🧾
+                </div>
+
+                <strong>
+                    New Sales Invoice
+                </strong>
+
+                <span>
+                    Create a sales invoice
+                </span>
+
+            </div>
+
+
+            <div class="action">
+
+                <div class="action-icon">
+                    🛒
+                </div>
+
+                <strong>
+                    New Purchase
+                </strong>
+
+                <span>
+                    Enter purchase details
+                </span>
+
+            </div>
+
+
+            <div class="action">
+
+                <div class="action-icon">
+                    💰
+                </div>
+
+                <strong>
+                    New Receipt
+                </strong>
+
+                <span>
+                    Record customer receipt
+                </span>
+
+            </div>
+
+
+            <div class="action">
+
+                <div class="action-icon">
+                    💳
+                </div>
+
+                <strong>
+                    New Payment
+                </strong>
+
+                <span>
+                    Record supplier payment
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT TRANSACTIONS -->
+
+        <div class="table-box">
+
+            <div class="table-header">
+
+                <h3>
+                    Recent Transactions
+                </h3>
+
+                <a href="#" class="view-all">
+                    View All
+                </a>
+
+            </div>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Invoice No.
+                        </th>
+
+                        <th>
+                            Party Name
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            09-09-2026
+                        </td>
+
+                        <td>
+                            HT/INV/1025
+                        </td>
+
+                        <td>
+                            Customer 1
+                        </td>
+
+                        <td>
+                            Sales
+                        </td>
+
+                        <td>
+                            ₹ 85,600
+                        </td>
+
+                        <td>
+                            <span class="status">
+                                Completed
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            08-09-2026
+                        </td>
+
+                        <td>
+                            HT/PUR/548
+                        </td>
+
+                        <td>
+                            Supplier 1
+                        </td>
+
+                        <td>
+                            Purchase
+                        </td>
+
+                        <td>
+                            ₹ 45,200
+                        </td>
+
+                        <td>
+                            <span class="status">
+                                Completed
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            08-09-2026
+                        </td>
+
+                        <td>
+                            REC/0258
+                        </td>
+
+                        <td>
+                            Customer 2
+                        </td>
+
+                        <td>
+                            Receipt
+                        </td>
+
+                        <td>
+                            ₹ 25,000
+                        </td>
+
+                        <td>
+                            <span class="status">
+                                Completed
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            07-09-2026
+                        </td>
+
+                        <td>
+                            PAY/0198
+                        </td>
+
+                        <td>
+                            Supplier 2
+                        </td>
+
+                        <td>
+                            Payment
+                        </td>
+
+                        <td>
+                            ₹ 18,500
+                        </td>
+
+                        <td>
+                            <span class="status">
+                                Completed
+                            </span>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    function logout() {
+
+        const confirmLogout =
+            confirm("Are you sure you want to logout?");
+
+        if (confirmLogout) {
+
+            window.location.href = "index.html";
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>
+```
+
+### Your GitHub folder should now look like this
+
+```text
+harsha-traders/
+│
+├── index.html       ← Login page
+└── dashboard.html   ← Dashboard after login
+```
+
+The flow will be:
+
+**Login → Successful Login → Dashboard → Logout → Login page**
+
+The dashboard currently has sample figures. The next step can be to make **Sales, Purchase, Receipts, Payments, Customers, Suppliers and Reports actually work and save data**, rather than just showing sample information.
 
