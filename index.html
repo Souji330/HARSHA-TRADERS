@@ -1,132 +1,722 @@
-const loginForm = document.getElementById("loginForm");
-const username = document.getElementById("username");
-const password = document.getElementById("password");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-const usernameError = document.getElementById("usernameError");
-const passwordError = document.getElementById("passwordError");
+    <title>Harsha Traders | Login</title>
 
-const loginButton = document.getElementById("loginButton");
-const loginMessage = document.getElementById("loginMessage");
-
-const togglePassword = document.getElementById("togglePassword");
-const rememberMe = document.getElementById("rememberMe");
-
-
-// Show / Hide Password
-togglePassword.addEventListener("click", function () {
-
-    if (password.type === "password") {
-        password.type = "text";
-        togglePassword.textContent = "Hide";
-    } else {
-        password.type = "password";
-        togglePassword.textContent = "Show";
-    }
-
-});
-
-
-// Load remembered username
-window.addEventListener("load", function () {
-
-    const savedUsername = localStorage.getItem("harshaUsername");
-
-    if (savedUsername) {
-        username.value = savedUsername;
-        rememberMe.checked = true;
-    }
-
-});
-
-
-// Login
-loginForm.addEventListener("submit", function (event) {
-
-    event.preventDefault();
-
-    usernameError.textContent = "";
-    passwordError.textContent = "";
-    loginMessage.textContent = "";
-    loginMessage.className = "login-message";
-
-    let valid = true;
-
-    if (username.value.trim() === "") {
-        usernameError.textContent = "Please enter username or email.";
-        valid = false;
-    }
-
-    if (password.value.trim() === "") {
-        passwordError.textContent = "Please enter password.";
-        valid = false;
-    }
-
-    if (!valid) {
-        return;
-    }
-
-    loginButton.disabled = true;
-    loginButton.textContent = "LOGGING IN...";
-
-    /*
-       DEMO LOGIN ONLY
-
-       Username: admin
-       Password: Harsha@123
-
-       IMPORTANT:
-       Do not use frontend-only passwords for a real website.
-       Connect this form to a secure backend/database.
-    */
-
-    setTimeout(function () {
-
-        const enteredUsername = username.value.trim();
-        const enteredPassword = password.value;
-
-        if (
-            enteredUsername === "admin" &&
-            enteredPassword === "Harsha@123"
-        ) {
-
-            if (rememberMe.checked) {
-                localStorage.setItem(
-                    "harshaUsername",
-                    enteredUsername
-                );
-            } else {
-                localStorage.removeItem("harshaUsername");
-            }
-
-            loginMessage.textContent = "Login successful. Redirecting...";
-            loginMessage.classList.add("success");
-
-            setTimeout(function () {
-                window.location.href = "dashboard.html";
-            }, 1000);
-
-        } else {
-
-            loginMessage.textContent =
-                "Invalid username or password.";
-
-            loginButton.disabled = false;
-            loginButton.textContent = "LOGIN";
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-    }, 800);
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 35, 62, 0.96),
+                    rgba(14, 91, 130, 0.94)
+                ),
+                url("https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2000&q=80");
 
-});
+            background-size: cover;
+            background-position: center;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 620px;
+
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 22px;
+            overflow: hidden;
+
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.30);
+        }
+
+        /* LEFT SIDE */
+
+        .company-section {
+            position: relative;
+            padding: 60px;
+            color: white;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #06345b,
+                    #0b638b
+                );
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .company-section::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+
+            border-radius: 50%;
+
+            right: -150px;
+            bottom: -120px;
+
+            border: 50px solid rgba(255,255,255,0.06);
+        }
+
+        .brand {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-logo {
+            width: 75px;
+            height: 75px;
+
+            border-radius: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+
+            font-size: 25px;
+            font-weight: 800;
+
+            margin-bottom: 25px;
+        }
+
+        .brand h1 {
+            font-size: 38px;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .brand p {
+            font-size: 17px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.82);
+            max-width: 430px;
+        }
+
+        .features {
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            margin-top: 18px;
+
+            font-size: 14px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .check {
+            width: 28px;
+            height: 28px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.13);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+        }
+
+        .copyright {
+            position: relative;
+            z-index: 2;
+
+            font-size: 12px;
+            color: rgba(255,255,255,0.55);
+        }
 
 
-// Forgot Password
-document.getElementById("forgotPassword")
-    .addEventListener("click", function (event) {
+        /* LOGIN SIDE */
 
-        event.preventDefault();
+        .login-section {
+            padding: 65px 55px;
 
-        alert(
-            "Please contact the Harsha Traders administrator to reset your password."
-        );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    });
+        .login-box {
+            width: 100%;
+            max-width: 370px;
+        }
+
+        .login-box h2 {
+            color: #123b59;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            color: #7a8791;
+            font-size: 14px;
+            margin-bottom: 35px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+
+            color: #34434e;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+
+            height: 52px;
+
+            border: 1px solid #dce2e6;
+            border-radius: 10px;
+
+            padding: 0 16px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition: 0.25s;
+
+            background: #fbfcfd;
+        }
+
+        input:focus {
+            border-color: #1478a4;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 4px rgba(20,120,164,0.08);
+        }
+
+        .password-input {
+            padding-right: 75px;
+        }
+
+        .show-password {
+            position: absolute;
+
+            right: 12px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+            background: none;
+
+            color: #1478a4;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .options {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin: 5px 0 27px;
+
+            font-size: 12px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #65727b;
+        }
+
+        .remember input {
+            width: auto;
+            height: auto;
+        }
+
+        .forgot {
+            color: #1478a4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 53px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: linear-gradient(
+                135deg,
+                #075183,
+                #1682aa
+            );
+
+            color: white;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            letter-spacing: 0.5px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 20px rgba(7,81,131,0.22);
+
+            transition: 0.25s;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 25px rgba(7,81,131,0.30);
+        }
+
+        .login-button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            min-height: 20px;
+
+            text-align: center;
+
+            margin-top: 15px;
+
+            font-size: 13px;
+        }
+
+        .error {
+            color: #d93025;
+        }
+
+        .success {
+            color: #188038;
+        }
+
+        .security-note {
+            text-align: center;
+
+            margin-top: 28px;
+
+            color: #9aa3aa;
+
+            font-size: 11px;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            .page {
+                grid-template-columns: 1fr;
+                max-width: 470px;
+            }
+
+            .company-section {
+                padding: 35px;
+                min-height: 330px;
+            }
+
+            .brand h1 {
+                font-size: 30px;
+            }
+
+            .features {
+                display: none;
+            }
+
+            .copyright {
+                margin-top: 45px;
+            }
+
+            .login-section {
+                padding: 40px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            body {
+                padding: 12px;
+            }
+
+            .company-section {
+                padding: 30px 25px;
+            }
+
+            .login-section {
+                padding: 35px 22px;
+            }
+
+            .brand h1 {
+                font-size: 27px;
+            }
+
+            .brand-logo {
+                width: 62px;
+                height: 62px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <!-- COMPANY INFORMATION -->
+
+    <section class="company-section">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                HT
+            </div>
+
+            <h1>Harsha Traders</h1>
+
+            <p>
+                Welcome to the Harsha Traders
+                Business Management Portal.
+                Manage your business securely
+                from one place.
+            </p>
+
+        </div>
+
+
+        <div class="features">
+
+            <div class="feature">
+                <span class="check">✓</span>
+                Sales & Purchase Management
+            </div>
+
+            <div class="feature">
+                <span class="check">✓</span>
+                Payments & Receipts
+            </div>
+
+            <div class="feature">
+                <span class="check">✓</span>
+                Customer & Supplier Accounts
+            </div>
+
+            <div class="feature">
+                <span class="check">✓</span>
+                Business Reports
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+            © 2026 Harsha Traders. All Rights Reserved.
+        </div>
+
+    </section>
+
+
+    <!-- LOGIN -->
+
+    <section class="login-section">
+
+        <div class="login-box">
+
+            <h2>Welcome Back</h2>
+
+            <p class="login-subtitle">
+                Sign in to access your business dashboard
+            </p>
+
+
+            <form id="loginForm">
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username / Email
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="password-input"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            id="showPassword"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="options">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                        >
+
+                        Remember me
+
+                    </label>
+
+
+                    <a href="#" class="forgot">
+                        Forgot Password?
+                    </a>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="loginButton"
+                >
+                    SIGN IN
+                </button>
+
+
+                <div
+                    class="message"
+                    id="message"
+                ></div>
+
+            </form>
+
+
+            <div class="security-note">
+                🔒 Secure business portal
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    const form = document.getElementById("loginForm");
+
+    const username =
+        document.getElementById("username");
+
+    const password =
+        document.getElementById("password");
+
+    const button =
+        document.getElementById("loginButton");
+
+    const message =
+        document.getElementById("message");
+
+    const showPassword =
+        document.getElementById("showPassword");
+
+
+    /* SHOW / HIDE PASSWORD */
+
+    showPassword.addEventListener(
+        "click",
+        function () {
+
+            if (password.type === "password") {
+
+                password.type = "text";
+
+                showPassword.textContent = "Hide";
+
+            } else {
+
+                password.type = "password";
+
+                showPassword.textContent = "Show";
+            }
+
+        }
+    );
+
+
+    /* LOGIN */
+
+    form.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+            message.textContent = "";
+            message.className = "message";
+
+
+            if (username.value.trim() === "") {
+
+                message.textContent =
+                    "Please enter your username.";
+
+                message.classList.add("error");
+
+                username.focus();
+
+                return;
+            }
+
+
+            if (password.value === "") {
+
+                message.textContent =
+                    "Please enter your password.";
+
+                message.classList.add("error");
+
+                password.focus();
+
+                return;
+            }
+
+
+            button.disabled = true;
+
+            button.textContent = "SIGNING IN...";
+
+
+            /*
+             * DEMO ONLY
+             *
+             * Replace this section with
+             * your real backend authentication.
+             */
+
+            setTimeout(function () {
+
+                if (
+                    username.value === "admin" &&
+                    password.value === "Harsha@123"
+                ) {
+
+                    message.textContent =
+                        "Login successful. Opening dashboard...";
+
+                    message.classList.add("success");
+
+
+                    setTimeout(function () {
+
+                        window.location.href =
+                            "dashboard.html";
+
+                    }, 800);
+
+
+                } else {
+
+                    message.textContent =
+                        "Invalid username or password.";
+
+                    message.classList.add("error");
+
+                    button.disabled = false;
+
+                    button.textContent = "SIGN IN";
+                }
+
+            }, 800);
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
